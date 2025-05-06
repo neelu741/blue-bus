@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RedBus Clone</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #4ea1d8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .search-form {
+      max-width: 800px;
+      background-color: white;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .search-form input, .search-form button {
+      padding: 10px;
+      margin: 10px 5px;
+      font-size: 16px;
+    }
+
+    #results {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .bus {
+      background-color: white;
+      border-left: 5px solid #d84e55;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+    .seats {
+      margin-top: 10px;
+    }
+
+    .seat {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-color: #ccc;
+      margin: 3px;
+      line-height: 25px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .seat.selected {
+      background-color: #d84e55;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>BlueBus Web App</header>
+
+<div class="search-form">
+  <input type="text" id="source" placeholder="Source City">
+  <input type="text" id="destination" placeholder="Destination City">
+  <input type="date" id="travelDate">
+  <button onclick="search()">Search</button>
+</div>
+
+<div id="results"></div>
+
+<script>
+  const busList = [
+    { id: 1, name: 'Express Travels', time: '09:00 AM', seats: 6 },
+    { id: 2, name: 'Super Deluxe', time: '01:30 PM', seats: 4 },
+    { id: 3, name: 'Night Rider', time: '09:00 PM', seats: 5 }
+  ];
+
+  function search() {
+    const src = document.getElementById('source').value;
+    const dst = document.getElementById('destination').value;
+    const date = document.getElementById('travelDate').value;
+
+    if (!src || !dst || !date) {
+      alert("Please enter all fields!");
+      return;
+    }
+
+    const container = document.getElementById('results');
+    container.innerHTML = `<h3>Buses from ${src} to ${dst} on ${date}</h3>`;
+
+    busList.forEach(bus => {
+      const div = document.createElement('div');
+      div.className = 'bus';
+      div.innerHTML = `
+        <strong>${bus.name}</strong><br>
+        Departure: ${bus.time}<br>
+        Seats Available: ${bus.seats}<br>
+        <div class="seats">${renderSeats(bus.seats)}</div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function renderSeats(count) {
+    let seats = '';
+    for (let i = 1; i <= count; i++) {
+      seats += `<div class="seat" onclick="this.classList.toggle('selected')">${i}</div>`;
+    }
+    return seats;
+  }
+</script>
+
+</body>
+</html>
+
